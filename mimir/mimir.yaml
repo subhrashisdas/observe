@@ -1,0 +1,8 @@
+server:
+  http:
+    port: 7200
+
+storage:
+  type: "local"
+  local:
+    directory: /mimir/data

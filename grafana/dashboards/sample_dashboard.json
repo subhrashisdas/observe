@@ -1,0 +1,43 @@
+{
+  "dashboard": {
+    "title": "Sample Monitoring Dashboard",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "CPU Usage",
+        "targets": [
+          {
+            "target": "avg(rate(node_cpu_seconds_total{mode!=\"idle\"}[1m])) by (instance)"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Requests Per Minute",
+        "targets": [
+          {
+            "target": "rate(http_requests_total[1m])"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Memory Usage",
+        "targets": [
+          {
+            "target": "1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Disk Usage",
+        "targets": [
+          {
+            "target": "(node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes"
+          }
+        ]
+      }
+    ]
+  }
+}

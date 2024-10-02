@@ -1,0 +1,26 @@
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+
+ingester:
+  chunk_idle_period: 5m
+  chunk_retention_period: 30m
+  max_transfer_retries: 0
+  idle_timeout: 1m
+
+storage:
+  boltdb:
+    directory: /loki/index
+
+schema:
+  configs:
+    - from: 2020-10-24
+      store: boltdb
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+
+compactor:
+  retention_enabled: true

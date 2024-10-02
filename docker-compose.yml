@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/data:/var/lib/grafana  # Local storage for Grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning  # Provisioning
+      - ./grafana/dashboards:/etc/grafana/dashboards  # Dashboards
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Change this to a secure password!
+    networks:
+      - observability-network
+
+  loki:
+    image: grafana/loki:latest
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki/data:/loki  # Local storage for Loki data
+      - ./loki/local-config.yaml:/etc/loki/local-config.yaml  # Local config file
+    networks:
+      - observability-network
+
+  tempo:
+    image: grafana/tempo:latest
+    command: -config.file=/etc/tempo/tempo.yaml
+    ports:
+      - "3200:3200"
+    volumes:
+      - ./tempo/data:/tempo/traces  # Local storage for Tempo traces
+      - ./tempo/tempo.yaml:/etc/tempo/tempo.yaml  # Local config file
+    networks:
+      - observability-network
+
+  mimir:
+    image: grafana/mimir:latest
+    command: -config.file=/etc/mimir/mimir.yaml
+    ports:
+      - "7200:7200"
+    volumes:
+      - ./mimir/data:/mimir/data  # Local storage for Mimir metrics
+      - ./mimir/mimir.yaml:/etc/mimir/mimir.yaml  # Local config file
+    networks:
+      - observability-network
+
+networks:
+  observability-network:
