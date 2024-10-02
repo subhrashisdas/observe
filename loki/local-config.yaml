@@ -7,11 +7,6 @@ ingester:
   chunk_idle_period: 5m
   chunk_retention_period: 30m
   max_transfer_retries: 0
-  idle_timeout: 1m
-
-storage:
-  boltdb:
-    directory: /loki/index
 
 schema:
   configs:
@@ -21,6 +16,11 @@ schema:
       index:
         prefix: index_
         period: 24h
+
+storage:
+  type: filesystem
+  filesystem:
+    directory: /loki/index
 
 compactor:
   retention_enabled: true
