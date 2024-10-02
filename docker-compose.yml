@@ -4,11 +4,9 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./grafana/data:/var/lib/grafana  # Local storage for Grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning  # Provisioning
-      - ./grafana/dashboards:/etc/grafana/dashboards  # Dashboards
+      - ./grafana/data:/var/lib/grafana
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin  # Change this to a secure password!
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
       - observability-network
 
