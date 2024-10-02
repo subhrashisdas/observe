@@ -4,7 +4,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./grafana/data:/var/lib/grafana
+      - ./grafana/provisioning/dashboards/main.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
@@ -36,7 +37,7 @@ services:
     image: grafana/mimir:latest
     command: -config.file=/etc/mimir/mimir.yaml
     ports:
-      - "7200:7200"
+      - "9009:9009"
     volumes:
       - ./mimir/data:/mimir/data  # Local storage for Mimir metrics
       - ./mimir/mimir.yaml:/etc/mimir/mimir.yaml  # Local config file
