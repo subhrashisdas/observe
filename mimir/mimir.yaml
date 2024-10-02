@@ -1,8 +1,10 @@
 server:
-  http:
-    port: 7200
+  http_listen_port: 7200
 
 storage:
   type: "local"
   local:
     directory: /mimir/data
+
+limits:
+  max_query_series: 100000
