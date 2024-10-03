@@ -38,6 +38,4 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 8000
 
-EXPOSE 12345
-
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
