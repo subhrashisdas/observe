@@ -18,25 +18,15 @@ RUN apt-get update
 
 RUN apt-get install -y alloy
 
+RUN alloy --version
+
 RUN apt-get clean
 
 RUN rm -i /etc/apt/sources.list.d/grafana.list
 
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-
-RUN mkdir -p /etc/alloy
-
-RUN cp config.alloy /etc/alloy/config.alloy
+COPY config.alloy /etc/alloy/config.alloy
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-EXPOSE 8000
 
 EXPOSE 12345
 
