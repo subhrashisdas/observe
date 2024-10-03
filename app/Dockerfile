@@ -1,20 +1,23 @@
-# Use the official Node.js image
 FROM node:22
 
-# Set the working directory
+RUN apt-get update
+RUN apt-get install -y gnupg2 wget
+RUN mkdir -p /etc/apt/keyrings/
+RUN wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | tee /etc/apt/keyrings/grafana.gpg > /dev/null
+RUN echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | tee /etc/apt/sources.list.d/grafana.list
+RUN apt-get update
+RUN apt-get install -y grafana
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
+
 WORKDIR /usr/src/app
 
-# Copy package.json (not strictly necessary if there are no dependencies)
 COPY package*.json ./
 
-# Install dependencies (not necessary, but included for completeness)
 RUN npm install
 
-# Copy the rest of the application code
 COPY . .
 
-# Expose the application port
 EXPOSE 8000
 
-# Command to run the application
 CMD ["node", "index.js"]
