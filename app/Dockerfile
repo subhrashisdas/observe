@@ -9,10 +9,13 @@ RUN echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com 
 RUN apt-get update
 RUN apt-get install -y alloy
 RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/*
+RUN rm -i /etc/apt/sources.list.d/grafana.list
 
 WORKDIR /usr/src/app
 
+RUN mkdir -p /etc/alloy
+COPY config.alloy /etc/alloy/config.alloy
+RUN cat /etc/alloy/config.alloy
 COPY package*.json ./
 
 RUN npm install
