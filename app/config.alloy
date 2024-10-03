@@ -18,6 +18,6 @@ prometheus.relabel "filter_metrics" {
 
 prometheus.remote_write "metrics_service" {
     endpoint {
-        url = "http://localhost:9090/api/v1/write"
+        url = "http://localhost:9009/api/v1/write"
     }
 }
