@@ -21,7 +21,7 @@ RUN tar -xzf beyla.tar.gz
 RUN mv beyla /usr/local/bin/ 
 RUN rm beyla.tar.gz
 
-# Run NPM
+# Run Node
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
