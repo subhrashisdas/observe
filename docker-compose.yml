@@ -73,5 +73,16 @@ services:
   #   networks:
   #     - observability-network
 
+  beyla:
+    image: grafana/beyla:latest
+    pid: "host"
+    privileged: true
+    environment:
+      BEYLA_PRINT_TRACES: "true"
+      BEYLA_OPEN_PORT: "8000"
+      BEYLA_PROMETHEUS_PORT: 12345
+    ports:
+      - "8999:8999"
+
 networks:
   observability-network:

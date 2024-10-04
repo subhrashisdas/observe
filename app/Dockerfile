@@ -1,10 +1,15 @@
-FROM node:22
+FROM amd64/ubuntu
 
 # Install Basics
 RUN apt-get update
+RUN apt-get install -y curl
 RUN apt-get install -y gnupg2
 RUN apt-get install -y wget
 RUN apt-get install -y supervisor
+
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+RUN bash nodesource_setup.sh
+RUN apt-get install -y nodejs
 
 # Install Alloy
 RUN mkdir -p /etc/apt/keyrings/
