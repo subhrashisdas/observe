@@ -27,9 +27,12 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN mkdir -p /etc/alloy
+RUN mkdir -p /etc/beyla
 COPY config.alloy /etc/alloy/config.alloy
+COPY config.yaml /etc/beyla/config.yaml
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Execute
 EXPOSE 8000
+EXPOSE 8001
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
