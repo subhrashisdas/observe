@@ -7,13 +7,13 @@ services:
     networks:
       - observability-network
 
-  alloy:
-    build:
-      context: ./alloy
-    ports:
-      - "12345:12345"
-    networks:
-      - observability-network
+  # alloy:
+  #   build:
+  #     context: ./alloy
+  #   ports:
+  #     - "12345:12345"
+  #   networks:
+  #     - observability-network
 
   grafana:
     image: grafana/grafana:latest
@@ -62,16 +62,17 @@ services:
     networks:
       - observability-network
 
-  # alloy:
-  #   image: grafana/alloy:latest
-  #   ports:
-  #     - "12345:12345"
-  #   volumes:
-  #     - ./alloy/config.alloy:/etc/alloy/config.alloy
-  #   environment:
-  #     - CONFIG_FILE_PATH=/etc/alloy/config.alloy
-  #   networks:
-  #     - observability-network
+  alloy:
+    image: grafana/alloy:latest
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./alloy/config.alloy:/etc/alloy/config.alloy
+    command: |
+      run 
+        --server.http.listen-addr=0.0.0.0:12345 
+        --storage.path=/var/lib/alloy/data 
+        /etc/alloy/config.alloy
 
   beyla:
     image: grafana/beyla:latest
@@ -82,7 +83,7 @@ services:
       BEYLA_OPEN_PORT: "8000"
       BEYLA_PROMETHEUS_PORT: 12345
     ports:
-      - "8999:8999"
+      - "12345:12345"
 
 networks:
   observability-network:
