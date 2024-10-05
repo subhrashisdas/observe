@@ -5,7 +5,7 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - observability-network
+      - observe
 
   # alloy:
   #   build:
@@ -13,7 +13,7 @@ services:
   #   ports:
   #     - "12345:12345"
   #   networks:
-  #     - observability-network
+  #     - observe
 
   grafana:
     image: grafana/grafana:latest
@@ -27,7 +27,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
-      - observability-network
+      - observe
 
   # loki:
   #   image: grafana/loki:latest
@@ -38,7 +38,7 @@ services:
   #     - ./loki/data:/loki  # Local storage for Loki data
   #     - ./loki/local-config.yaml:/etc/loki/local-config.yaml  # Local config file
   #   networks:
-  #     - observability-network
+  #     - observe
 
   # tempo:
   #   image: grafana/tempo:latest
@@ -49,7 +49,7 @@ services:
   #     - ./tempo/data:/tempo/traces  # Local storage for Tempo traces
   #     - ./tempo/tempo.yaml:/etc/tempo/tempo.yaml  # Local config file
   #   networks:
-  #     - observability-network
+  #     - observe
 
   mimir:
     image: grafana/mimir:latest
@@ -60,7 +60,7 @@ services:
       - ./mimir/data:/mimir/data  # Local storage for Mimir metrics
       - ./mimir/mimir.yaml:/etc/mimir/mimir.yaml  # Local config file
     networks:
-      - observability-network
+      - observe
 
   alloy:
     image: grafana/alloy:latest
@@ -73,6 +73,8 @@ services:
         --server.http.listen-addr=0.0.0.0:12345 
         --storage.path=/var/lib/alloy/data 
         /etc/alloy/config.alloy
+    networks:
+      - observe
 
   beyla:
     image: grafana/beyla:latest
@@ -86,4 +88,4 @@ services:
       - "12345:12345"
 
 networks:
-  observability-network:
+  observe:
