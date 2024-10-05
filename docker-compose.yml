@@ -7,14 +7,6 @@ services:
     networks:
       - observe
 
-  # alloy:
-  #   build:
-  #     context: ./alloy
-  #   ports:
-  #     - "12345:12345"
-  #   networks:
-  #     - observe
-
   grafana:
     image: grafana/grafana:latest
     ports:
@@ -83,9 +75,9 @@ services:
     environment:
       BEYLA_PRINT_TRACES: "true"
       BEYLA_OPEN_PORT: "8000"
-      BEYLA_PROMETHEUS_PORT: 12345
+      BEYLA_PROMETHEUS_PORT: 9000
     ports:
-      - "12345:12345"
+      - "9000:9000"
 
 networks:
   observe:
