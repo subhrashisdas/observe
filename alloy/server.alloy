@@ -1,5 +1,5 @@
 alloy_server.port "default" {
-  open_port = "4000"
+  open_port = "6000"
 }
 
 alloy_server.scrape "beyla" {
