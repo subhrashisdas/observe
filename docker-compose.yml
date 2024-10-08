@@ -24,7 +24,7 @@ services:
     ports:
       - "5000:12345"
     volumes:
-      - ./alloy/config.alloy:/etc/alloy/client.alloy
+      - ./alloy/client.alloy:/etc/alloy/config.alloy
     command: |
       run 
         --server.http.listen-addr=0.0.0.0:12345
@@ -38,7 +38,7 @@ services:
     ports:
       - "6000:12345"
     volumes:
-      - ./alloy/config.alloy:/etc/alloy/server.alloy
+      - ./alloy/server.alloy:/etc/alloy/config.alloy
     command: |
       run 
         --server.http.listen-addr=0.0.0.0:12345 
@@ -58,20 +58,20 @@ services:
     networks:
       - observe
 
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./grafana/data:/var/lib/grafana
-      - ./grafana/provisioning/dashboards/main.yaml:/etc/grafana/provisioning/dashboards/main.yaml
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_SERVER_HTTP_PORT=8000
-    networks:
-      - observe
+  # grafana:
+  #   image: grafana/grafana:latest
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./grafana/data:/var/lib/grafana
+  #     - ./grafana/provisioning/dashboards/main.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+  #     - ./grafana/dashboards:/var/lib/grafana/dashboards
+  #     - ./grafana/provisioning/:/etc/grafana/provisioning/
+  #   environment:
+  #     - GF_SECURITY_ADMIN_PASSWORD=admin
+  #     - GF_SERVER_HTTP_PORT=8000
+  #   networks:
+  #     - observe
 
 networks:
   observe:

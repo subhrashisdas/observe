@@ -1,14 +1,13 @@
-alloy_server.port "default" {
-  open_port = "6000"
+prometheus.receive_http "api" {
+  http {
+    listen_address = "0.0.0.0"
+    listen_port = 6000
+  }
+  forward_to = [prometheus.remote_write.local.receiver]
 }
 
-alloy_server.scrape "beyla" {
-  targets = alloy_server.port.default.targets
-  forward_to = [alloy_server.remote_write.mimir]
-}
-
-alloy_server.remote_write "mimir" {
+prometheus.remote_write "local" {
   endpoint {
-    url = "http://mimir:7000/api/v1/write"
+    url = "http://mimir:7000/api/v1/push"
   }
 }
