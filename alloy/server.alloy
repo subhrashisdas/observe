@@ -1,4 +1,4 @@
-beyla.ebpf "default" {
+alloy_server.ebpf "default" {
   open_port = "4000"
 }
 
