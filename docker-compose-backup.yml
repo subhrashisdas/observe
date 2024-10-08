@@ -1,0 +1,98 @@
+services:
+  app:
+    build:
+      context: ./app
+    ports:
+      - "3000:3000"
+    networks:
+      - observe
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/provisioning/dashboards/main.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - observe
+
+  # loki:
+  #   image: grafana/loki:latest
+  #   command: -config.file=/etc/loki/local-config.yaml
+  #   ports:
+  #     - "3100:3100"
+  #   volumes:
+  #     - ./loki/data:/loki  # Local storage for Loki data
+  #     - ./loki/local-config.yaml:/etc/loki/local-config.yaml  # Local config file
+  #   networks:
+  #     - observe
+
+  # tempo:
+  #   image: grafana/tempo:latest
+  #   command: -config.file=/etc/tempo/tempo.yaml
+  #   ports:
+  #     - "3200:3200"
+  #   volumes:
+  #     - ./tempo/data:/tempo/traces  # Local storage for Tempo traces
+  #     - ./tempo/tempo.yaml:/etc/tempo/tempo.yaml  # Local config file
+  #   networks:
+  #     - observe
+
+  mimir:
+    image: grafana/mimir:latest
+    command: -config.file=/etc/mimir/mimir.yaml
+    ports:
+      - "7000:7000"
+    volumes:
+      - ./mimir/data:/mimir/data  # Local storage for Mimir metrics
+      - ./mimir/mimir.yaml:/etc/mimir/mimir.yaml  # Local config file
+    networks:
+      - observe
+
+  alloy_server:
+    image: grafana/alloy:latest
+    ports:
+      - "6000:6000"
+    volumes:
+      - ./alloy/config.alloy:/etc/alloy/config.alloy
+    command: |
+      run 
+        --server.http.listen-addr=0.0.0.0:12345 
+        --storage.path=/var/lib/alloy/data 
+        /etc/alloy/config.alloy
+    networks:
+      - observe
+
+  alloy_client:
+    image: grafana/alloy:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./alloy/config.alloy:/etc/alloy/config.alloy
+    command: |
+      run 
+        --server.http.listen-addr=0.0.0.0:12345 
+        --storage.path=/var/lib/alloy/data 
+        /etc/alloy/config.alloy
+    networks:
+      - observe
+
+  beyla:
+    image: grafana/beyla:latest
+    pid: "host"
+    privileged: true
+    environment:
+      BEYLA_PRINT_TRACES: "true"
+      BEYLA_OPEN_PORT: "8000"
+      BEYLA_PROMETHEUS_PORT: 9000
+      BEYLA_REMOTE_WRITE_URL: "http://alloy_server:12345/api/v1/write"
+    ports:
+      - "4000:4000"
+
+networks:
+  observe:
