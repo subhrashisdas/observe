@@ -38,7 +38,6 @@ services:
     networks:
       - observe
 
-
   alloy_client:
     image: grafana/alloy:latest
     privileged: true
