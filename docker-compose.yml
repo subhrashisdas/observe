@@ -22,12 +22,12 @@ services:
   alloy_client:
     image: grafana/alloy:latest
     ports:
-      - "5000:5000"
+      - "5000:12345"
     volumes:
       - ./alloy/config.alloy:/etc/alloy/client.alloy
     command: |
       run 
-        --server.http.listen-addr=0.0.0.0:5000 
+        --server.http.listen-addr=0.0.0.0:12345
         --storage.path=/var/lib/alloy/data 
         /etc/alloy/config.alloy
     networks:
@@ -36,12 +36,12 @@ services:
   alloy_server:
     image: grafana/alloy:latest
     ports:
-      - "6000:6000"
+      - "6000:12345"
     volumes:
       - ./alloy/config.alloy:/etc/alloy/server.alloy
     command: |
       run 
-        --server.http.listen-addr=0.0.0.0:6000 
+        --server.http.listen-addr=0.0.0.0:12345 
         --storage.path=/var/lib/alloy/data 
         /etc/alloy/config.alloy
     networks:

@@ -3,7 +3,7 @@ alloy_server.port "default" {
 }
 
 alloy_server.scrape "beyla" {
-  targets = beyla.port.default.targets
+  targets = alloy_server.port.default.targets
   forward_to = [alloy_server.remote_write.mimir]
 }
 

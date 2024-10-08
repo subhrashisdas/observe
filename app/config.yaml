@@ -1,3 +1,0 @@
-open_port: 8000
-prometheus_export:
-  port: 8001
