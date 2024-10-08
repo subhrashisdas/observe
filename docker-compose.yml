@@ -36,7 +36,7 @@ services:
     expose:
       - 4500:4500
     networks:
-      - monitoring
+      - observe
 
 
   alloy_client:
