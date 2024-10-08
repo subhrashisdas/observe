@@ -4,7 +4,7 @@ beyla.ebpf "default" {
 
 alloy_client.scrape "beyla" {
   targets = beyla.ebpf.default.targets
-  forward_to = [alloy_client.remote_write.alloy_server.receiver]
+  forward_to = [alloy_client.remote_write.alloy_server]
 }
 
 alloy_client.remote_write "alloy_server" {
