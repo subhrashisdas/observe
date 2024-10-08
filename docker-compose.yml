@@ -13,8 +13,8 @@ services:
     privileged: true
     environment:
       BEYLA_PRINT_TRACES: "true"
-      BEYLA_OPEN_PORT: "8000"
-      BEYLA_PROMETHEUS_PORT: 4000 # On port 4000 it is accesible for prometheus to get data
+      BEYLA_OPEN_PORT: "3000" # Ports to watch
+      BEYLA_PROMETHEUS_PORT: 4000 # On port 4000 it is accesible for prometheus to get data, it needs to be open
       BEYLA_REMOTE_WRITE_URL: "http://alloy_client:5000/api/v1/write" # It will write to alloy client
     ports:
       - "4000:4000"
