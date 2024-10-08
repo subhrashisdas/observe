@@ -24,7 +24,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./alloy/config.alloy:/etc/alloy/config.alloy
+      - ./alloy/config.alloy:/etc/alloy/client.alloy
     command: |
       run 
         --server.http.listen-addr=0.0.0.0:5000 
@@ -38,7 +38,7 @@ services:
     ports:
       - "6000:6000"
     volumes:
-      - ./alloy/config.alloy:/etc/alloy/config.alloy
+      - ./alloy/config.alloy:/etc/alloy/server.alloy
     command: |
       run 
         --server.http.listen-addr=0.0.0.0:6000 

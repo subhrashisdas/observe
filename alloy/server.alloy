@@ -1,0 +1,14 @@
+beyla.ebpf "default" {
+  open_port = "9000"
+}
+
+prometheus.scrape "beyla" {
+  targets = beyla.ebpf.default.targets
+  forward_to = [prometheus.remote_write.demo.receiver]
+}
+
+prometheus.remote_write "demo" {
+  endpoint {
+    url = "http://localhost:9009/api/v1/write"
+  }
+}
