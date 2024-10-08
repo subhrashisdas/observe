@@ -1,12 +1,19 @@
-prometheus.scrape "self" {
-  targets = [
-    {"__address__" = "localhost:12345", "job" = "alloy"},
-  ]
+beyla.ebpf "default" {
+  open_port = 3000
+  debug = true
+}
+
+prometheus.exporter.unix "demo" { }
+
+prometheus.scrape "beyla" {
+  targets = prometheus.exporter.unix.demo.targets
+  honor_labels = true
   forward_to = [prometheus.remote_write.local.receiver]
+  scrape_interval = "10s"
 }
 
 prometheus.remote_write "local" {
   endpoint {
-    url = "http://localhost:6000/api/v1/metrics/write"
+    url = "http://alloy_server:6000/api/v1/metrics/write"
   }
 }
