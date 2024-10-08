@@ -1,12 +1,16 @@
-beyla.ebpf "default" {
-  open_port = 3000
-  debug = true
+prometheus.exporter.unix "node_exporter" {
+  targets = ["node_exporter:4500"]
 }
-
-prometheus.exporter.unix "demo" { }
 
 prometheus.scrape "beyla" {
   targets = prometheus.exporter.unix.demo.targets
+  honor_labels = true
+  forward_to = [prometheus.remote_write.local.receiver]
+  scrape_interval = "10s"
+}
+
+prometheus.scrape "node_exporter" {
+  targets = prometheus.exporter.unix.node_exporter.targets
   honor_labels = true
   forward_to = [prometheus.remote_write.local.receiver]
   scrape_interval = "10s"
