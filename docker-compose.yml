@@ -27,7 +27,7 @@ services:
       - ./alloy/config.alloy:/etc/alloy/config.alloy
     command: |
       run 
-        --server.http.listen-addr=0.0.0.0:12345 
+        --server.http.listen-addr=0.0.0.0:5000 
         --storage.path=/var/lib/alloy/data 
         /etc/alloy/config.alloy
     networks:
