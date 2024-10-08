@@ -2,12 +2,12 @@ beyla.ebpf "default" {
   open_port = "4000"
 }
 
-alloy.scrape "beyla" {
+alloy_client.scrape "beyla" {
   targets = beyla.ebpf.default.targets
-  forward_to = [prometheus.remote_write.alloy_server.receiver]
+  forward_to = [alloy_client.remote_write.alloy_server.receiver]
 }
 
-alloy.remote_write "alloy_server" {
+alloy_client.remote_write "alloy_server" {
   endpoint {
     url = "http://localhost:6000/api/v1/write"
   }
