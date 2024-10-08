@@ -1,14 +1,23 @@
-alloy_server.port "default" {
-  open_port = "6000"
+prometheus.exporter.unix "local_system" { }
+
+prometheus.scrape "scrape_metrics" {
+  targets         = prometheus.exporter.unix.local_system.targets
+  forward_to      = [prometheus.relabel.filter_metrics.receiver]
+  scrape_interval = "10s"
 }
 
-alloy_server.scrape "beyla" {
-  targets = alloy_server.port.default.targets
-  forward_to = [alloy_server.remote_write.mimir]
-}
-
-alloy_server.remote_write "mimir" {
-  endpoint {
-    url = "http://mimir:7000/api/v1/write"
+prometheus.relabel "filter_metrics" {
+  rule {
+    action        = "drop"
+    source_labels = ["env"]
+    regex         = "dev"
   }
+
+  forward_to = [prometheus.remote_write.metrics_service.receiver]
+}
+
+prometheus.remote_write "metrics_service" {
+    endpoint {
+        url = "http://localhost:9009/api/v1/write"
+    }
 }
