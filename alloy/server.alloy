@@ -1,5 +1,5 @@
-beyla.ebpf "default" {
-  open_port = "9000"
+alloy.ebpf "default" {
+  open_port = "5000"
 }
 
 prometheus.scrape "beyla" {
@@ -9,6 +9,6 @@ prometheus.scrape "beyla" {
 
 prometheus.remote_write "demo" {
   endpoint {
-    url = "http://localhost:9009/api/v1/write"
+    url = "http://localhost:6000/api/v1/write"
   }
 }

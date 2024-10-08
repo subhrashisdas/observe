@@ -1,14 +1,14 @@
 beyla.ebpf "default" {
-  open_port = "9000"
+  open_port = "4000"
 }
 
-prometheus.scrape "beyla" {
+alloy.scrape "beyla" {
   targets = beyla.ebpf.default.targets
-  forward_to = [prometheus.remote_write.demo.receiver]
+  forward_to = [prometheus.remote_write.alloy_server.receiver]
 }
 
-prometheus.remote_write "demo" {
+alloy.remote_write "alloy_server" {
   endpoint {
-    url = "http://localhost:9009/api/v1/write"
+    url = "http://localhost:6000/api/v1/write"
   }
 }
