@@ -1,16 +1,16 @@
-prometheus.exporter.unix "node_exporter" {
-  targets = "node_exporter:4500"
-}
-
-prometheus.scrape "beyla" {
-  targets = prometheus.exporter.unix.node_exporter.targets
+prometheus.scrape "node_exporter" {
+  targets = [
+    { target = "node_exporter:4500" }
+  ]
   honor_labels = true
   forward_to = [prometheus.remote_write.local.receiver]
   scrape_interval = "10s"
 }
 
-prometheus.scrape "node_exporter" {
-  targets = prometheus.exporter.unix.node_exporter.targets
+prometheus.scrape "beyla" {
+  targets = [
+    { target = "beyla:4000" }
+  ]
   honor_labels = true
   forward_to = [prometheus.remote_write.local.receiver]
   scrape_interval = "10s"
