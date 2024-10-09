@@ -1,19 +1,17 @@
 prometheus.scrape "node_exporter" {
-  targets = [
-    { target = "node_exporter:4500" }
-  ]
-  honor_labels = true
+  targets = [{
+    __address__ = "node_exporter:4500",
+  }]
   forward_to = [prometheus.remote_write.local.receiver]
-  scrape_interval = "10s"
+  honor_labels = true
 }
 
-prometheus.scrape "beyla" {
-  targets = [
-    { target = "beyla:4000" }
-  ]
-  honor_labels = true
+prometheus.receive_http "beyla" {
+  http {
+    listen_address = "0.0.0.0"
+    listen_port = 5000
+  }
   forward_to = [prometheus.remote_write.local.receiver]
-  scrape_interval = "10s"
 }
 
 prometheus.remote_write "local" {

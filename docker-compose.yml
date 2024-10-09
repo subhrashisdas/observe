@@ -18,8 +18,10 @@ services:
       BEYLA_REMOTE_WRITE_URL: "http://alloy_client:5000/api/v1/write" # It will write to alloy client
     ports:
       - "4000:4000"
+    networks:
+      - observe
 
-  node-exporter:
+  node_exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
     restart: unless-stopped
@@ -33,7 +35,7 @@ services:
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
       - '--web.listen-address=:4500'
-    expose:
+    ports:
       - 4500:4500
     networks:
       - observe
