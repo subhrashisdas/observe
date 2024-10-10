@@ -1,5 +1,5 @@
 services:
-  app:
+  appsmith:
     build:
       context: ./app
     ports:
