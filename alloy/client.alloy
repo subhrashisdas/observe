@@ -16,6 +16,9 @@ prometheus.receive_http "beyla" {
 
 prometheus.remote_write "local" {
   endpoint {
-    url = "http://alloy_server:6000/api/v1/metrics/write"
+    url = "http://mimir:9009/api/v1/push"
+    headers = {
+      "X-Scope-OrgID" = "EE",
+    }
   }
 }
