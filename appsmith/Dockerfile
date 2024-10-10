@@ -26,4 +26,4 @@ EXPOSE 3500
 EXPOSE 12345
 
 # Start Supervisor
-CMD ["node" "index.js"]
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
