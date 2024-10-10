@@ -6,9 +6,6 @@ RUN apt-get update && apt-get install -y supervisor
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
-
 # Install dependencies
 RUN npm install
 
