@@ -6,6 +6,9 @@ RUN apt-get update && apt-get install -y supervisor
 # Set the working directory
 WORKDIR /usr/src/app
 
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
 # Install dependencies
 RUN npm install
 
@@ -23,4 +26,4 @@ EXPOSE 3500
 EXPOSE 12345
 
 # Start Supervisor
-CMD ["/usr/bin/supervisord"]
+CMD ["node" "index.js"]
