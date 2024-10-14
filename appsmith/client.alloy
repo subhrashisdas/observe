@@ -1,0 +1,13 @@
+prometheus.exporter.unix "node" {
+}
+
+prometheus.scrape "demo" {
+  targets    = prometheus.exporter.unix.node.targets
+  forward_to = [prometheus.remote_write.local.receiver]
+}
+
+prometheus.remote_write "local" {
+  endpoint {
+    url = "http://alloy_server:6000/api/v1/metrics/write"
+  }
+}

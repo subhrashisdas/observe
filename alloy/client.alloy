@@ -1,0 +1,21 @@
+prometheus.scrape "node_exporter" {
+  targets = [{
+    __address__ = "node_exporter:4500",
+  }]
+  forward_to = [prometheus.remote_write.local.receiver]
+  honor_labels = true
+}
+
+prometheus.receive_http "beyla" {
+  http {
+    listen_address = "0.0.0.0"
+    listen_port = 5000
+  }
+  forward_to = [prometheus.remote_write.local.receiver]
+}
+
+prometheus.remote_write "local" {
+  endpoint {
+    url = "http://alloy_server:6000/api/v1/metrics/write"
+  }
+}

@@ -1,0 +1,121 @@
+services:
+  appsmith:
+    build:
+      context: ./appsmith
+    ports:
+      - "3500:3500"
+    networks:
+      - observe
+
+  # app:
+  #   build:
+  #     context: ./app
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - observe
+
+  # beyla:
+  #   image: grafana/beyla:latest
+  #   pid: "host"
+  #   privileged: true
+  #   environment:
+  #     BEYLA_PRINT_TRACES: "true"
+  #     BEYLA_OPEN_PORT: "3000" # Ports to watch
+  #     BEYLA_PROMETHEUS_PORT: 4000 # On port 4000 it is accesible for prometheus to get data, it needs to be open
+  #     BEYLA_REMOTE_WRITE_URL: "http://alloy_client:5000/api/v1/write" # It will write to alloy client
+  #   ports:
+  #     - "4000:4000"
+  #   networks:
+  #     - observe
+
+  # node_exporter:
+  #   image: prom/node-exporter:latest
+  #   container_name: node-exporter
+  #   restart: unless-stopped
+  #   volumes:
+  #     - /proc:/host/proc:ro
+  #     - /sys:/host/sys:ro
+  #     - /:/rootfs:ro
+  #   command:
+  #     - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+  #     - '--path.procfs=/host/proc'
+  #     - '--path.rootfs=/rootfs'
+  #     - '--path.sysfs=/host/sys'
+  #     - '--web.listen-address=:4500'
+  #   ports:
+  #     - 4500:4500
+  #   networks:
+  #     - observe
+
+  # node_exporter:
+  #   image: quay.io/prometheus/node-exporter:latest
+  #   container_name: node-exporter
+  #   command:
+  #     - '--path.rootfs=/host'
+  #     - '--web.listen-address=:4500'
+  #   network_mode: host
+  #   pid: host
+  #   restart: unless-stopped
+  #   volumes:
+  #     - '/:/host:ro,rslave'
+
+  # alloy_client:
+  #   image: grafana/alloy:latest
+  #   privileged: true
+  #   ports:
+  #     - "12345:12345"
+  #     - "5000:5000"
+  #   volumes:
+  #     - ./alloy/client.alloy:/etc/alloy/config.alloy
+  #   command: |
+  #     run 
+  #       --server.http.listen-addr=0.0.0.0:12345
+  #       --stability.level=public-preview
+  #       --storage.path=/var/lib/alloy/data 
+  #       /etc/alloy/config.alloy
+  #   networks:
+  #     - observe
+
+  alloy_server:
+    image: grafana/alloy:latest
+    ports:
+      - "6000:6000"
+    volumes:
+      - ./alloy/server.alloy:/etc/alloy/config.alloy
+    command: |
+      run 
+        --server.http.listen-addr=0.0.0.0:12345 
+        --storage.path=/var/lib/alloy/data 
+        /etc/alloy/config.alloy
+    networks:
+      - observe
+
+  mimir:
+    image: grafana/mimir:latest
+    command: -config.file=/etc/mimir/mimir.yaml
+    ports:
+      - "7000:7000"
+    volumes:
+      - ./mimir/data:/mimir/data
+      - ./mimir/mimir.yaml:/etc/mimir/mimir.yaml
+    networks:
+      - observe
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/provisioning/dashboards/main.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SERVER_HTTP_PORT=8000
+    networks:
+      - observe
+
+networks:
+  observe:

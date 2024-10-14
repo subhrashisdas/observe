@@ -1,0 +1,13 @@
+prometheus.receive_http "api" {
+  http {
+    listen_address = "0.0.0.0"
+    listen_port = 6000
+  }
+  forward_to = [prometheus.remote_write.local.receiver]
+}
+
+prometheus.remote_write "local" {
+  endpoint {
+    url = "http://mimir:7000/api/v1/push"
+  }
+}
